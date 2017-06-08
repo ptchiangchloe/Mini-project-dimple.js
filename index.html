@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Data visualization project</title>
+  </head>
+  <style media="screen">
+    h2 {
+      text-align: center;
+      color: purple;
+    }
+  </style>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+        "use strict";
+
+        d3.select('body')
+        .append('h2')
+        .text("The Demographics of passengers in Titanic");
+
+        data.forEach(function(d) {
+          d.Age = Math.round(d.Age);
+        })
+
+        data.forEach(function(d){
+          if (parseInt(d.Age) <= 10 ) {
+            d.AgeGroup = "0 - 10";
+          } else if ( parseInt(d.Age) > 10 && parseInt(d.Age) <= 20 ) {
+            d.AgeGroup = "10 - 20";
+          }else if(parseInt(d.Age) > 20 && parseInt(d.Age) <= 30 ) {
+            d.AgeGroup = "20 - 30";
+          }else if(parseInt(d.Age) > 30 && parseInt(d.Age) <= 40 ){
+            d.AgeGroup = "30 - 40";
+          }else if(parseInt(d.Age) > 40 && parseInt(d.Age) <= 50 ){
+            d.AgeGroup = "40 - 50";
+          }else if(parseInt(d.Age) > 50 && parseInt(d.Age) <= 60 ) {
+            d.AgeGroup = "50 - 60";
+          }else{
+            d.AgeGroup = "60 - 70";
+          }
+        })
+
+        data.forEach(function(d){
+          if (parseInt(d.Fare) <= 10) {
+            d.FareRange = "0 - 10";
+          } else if ( parseInt(d.Fare) > 10 && parseInt(d.Fare) <= 20 ){
+            d.FareRange = "10 - 20";
+          } else if ( parseInt(d.Fare) > 20 && parseInt(d.Fare) <= 30 ){
+            d.FareRange = "20 - 30";
+          } else if ( parseInt(d.Fare) > 30 && parseInt(d.Fare) <= 40 ){
+            d.FareRange = "30 - 40";
+          } else if ( parseInt(d.Fare) > 40 && parseInt(d.Fare) <= 50 ){
+            d.FareRange = "40 - 50";
+          } else if ( parseInt(d.Fare) > 50 && parseInt(d.Fare) <= 60 ){
+            d.FareRange = "50 - 60";
+          } else if ( parseInt(d.Fare) > 60 && parseInt(d.Fare) <= 70 ){
+            d.FareRange = "60 - 70";
+          } else if ( parseInt(d.Fare) > 70 && parseInt(d.Fare) <= 80 ){
+            d.FareRange = "70 - 80";
+          } else {
+            d.FareRange = "80 + ";
+          }
+          // console.log(d);
+        })
+
+        let margin = 75,
+        width = 1400 - margin,
+        height = 600 - margin;
+
+        let svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", width + margin)
+                  .attr("height", height + margin)
+                  .append('g')
+                  .attr('class', 'chart');
+
+                  var myChart = new dimple.chart(svg, data);
+                  var x = myChart.addCategoryAxis("x", "Age");
+                  myChart.addCategoryAxis("y", "FareRange");
+                  myChart.addSeries("Survived", dimple.plot.bubble);
+                  myChart.draw();
+      }
+    </script>
+  </body>
+    <script type="text/javascript">
+    var dataset = []
+    d3.csv("train.csv", draw);
+
+    </script>
+</html>
